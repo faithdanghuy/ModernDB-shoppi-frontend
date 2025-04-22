@@ -3,9 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
 import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
 import 'package:shoppi_frontend/features/cart/pages/cart_screen.dart';
+import 'package:shoppi_frontend/features/order/pages/order_screen.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_bloc.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_event.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_state.dart';
+import 'package:shoppi_frontend/features/product/bloc/review/review_bloc.dart';
+import 'package:shoppi_frontend/features/product/bloc/review/review_event.dart';
+import 'package:shoppi_frontend/features/product/bloc/review/review_state.dart';
+import 'package:shoppi_frontend/features/product/data/input_review_model.dart';
 import 'package:shoppi_frontend/features/product/data/product_model.dart';
 import 'package:shoppi_frontend/features/product/data/review_model.dart';
 
@@ -19,39 +24,71 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final ProductBloc productBloc = ProductBloc();
+  final ReviewBloc reviewBloc = ReviewBloc();
   ProductModel? product;
   List<ReviewModel> listReview = [];
+  bool canReview = false;
+  final TextEditingController commentController = TextEditingController();
+  double rating = 0;
 
   @override
   void initState() {
     super.initState();
     productBloc.add(EventProductDetail(widget.productId));
+    reviewBloc.add(EventCheckReviewable(id: widget.productId));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => productBloc,
-      child: BlocListener<ProductBloc, ProductState>(
-        bloc: productBloc,
-        listener: (context, state) {
-          if (state is StateProductDetail) {
-            if (state.success == true) {
-              setState(() {
-                product = state.data;
-                listReview = state.dataReview ?? [];
-              });
-            }
-          }
-          if (state is StateAddToCart && state.success == true) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Added to cart successfully!"),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => productBloc,
+        ),
+        BlocProvider(
+          create: (context) => reviewBloc,
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<ProductBloc, ProductState>(
+            bloc: productBloc,
+            listener: (context, state) {
+              if (state is StateProductDetail) {
+                if (state.success == true) {
+                  setState(() {
+                    product = state.data;
+                    listReview = state.dataReview ?? [];
+                  });
+                }
+              }
+              if (state is StateAddToCart && state.success == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Added to cart successfully!"),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<ReviewBloc, ReviewState>(
+            bloc: reviewBloc,
+            listener: (context, state) {
+              if (state is StateCheckReviewable) {
+                setState(() {
+                  canReview = state.result ?? false;
+                });
+              }
+
+              if (state is StateAddReview) {
+                if (state.success == true) {
+                  productBloc.add(EventProductDetail(widget.productId));
+                }
+              }
+            },
+          ),
+        ],
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -73,6 +110,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.receipt_long),
+                tooltip: "My Orders",
+                onPressed: () => context.goPage(const OrderScreen()),
+              ),
               IconButton(
                 icon: const Icon(Icons.shopping_cart_outlined),
                 onPressed: () => context.goPage(const CartScreen()),
@@ -159,12 +201,110 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       const Text(
                         "Reviews",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      for (var review in listReview)
-                        _buildReview(
-                            review.comment ?? "", review.rating.toString()),
+                      if (canReview) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Leave a Review",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              // Review text input
+                              TextField(
+                                controller: commentController,
+                                maxLines: 3,
+                                decoration: const InputDecoration(
+                                  hintText: 'Write your review here...',
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              // Rating stars with improved design
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: List.generate(5, (index) {
+                                  return IconButton(
+                                    icon: Icon(
+                                      index < rating
+                                          ? Icons.star
+                                          : Icons.star_border,
+                                      color: Colors.amber,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        rating = index +
+                                            1.0; // Update rating on click
+                                      });
+                                    },
+                                  );
+                                }),
+                              ),
+                              const SizedBox(height: 16),
+                              // Submit Review Button
+                              ElevatedButton(
+                                onPressed: () {
+                                  final review = InputReviewModel(
+                                    productId: widget.productId,
+                                    rating: rating.toInt(),
+                                    comment: commentController.text,
+                                  );
+                                  reviewBloc
+                                      .add(EventAddReview(review: review));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF5722),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 14),
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                child: const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 4.0),
+                                  child: Text(
+                                    "Submit Review",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                      ],
+                      if (listReview.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        const Text(
+                          "Customer Reviews",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        for (var review in listReview) _buildReview(review),
+                      ] else
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            "No reviews yet. Be the first to review!",
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.grey),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -178,15 +318,55 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _buildReview(String name, String review) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 4),
-        Text(review),
-        const SizedBox(height: 8),
-      ],
+  Widget _buildReview(ReviewModel review) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 4,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Row(
+                  children: List.generate(5, (index) {
+                    return Icon(
+                      index < (review.rating ?? 0)
+                          ? Icons.star
+                          : Icons.star_border,
+                      color: Colors.amber,
+                      size: 18,
+                    );
+                  }),
+                ),
+                const SizedBox(width: 8),
+                // Reviewer's name
+                Text(
+                  review.userId ?? "Anonymous",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Review comment
+            Text(
+              review.comment ?? "No comments",
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         address: event.address,
         phone: event.phone,
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         emit(StateRegister(success: true, message: response.data['message']));
       } else {
         // emit(StateRegister(success: false, message: response.data['message']));

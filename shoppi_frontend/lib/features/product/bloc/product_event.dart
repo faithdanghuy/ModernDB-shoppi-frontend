@@ -17,11 +17,3 @@ class EventAddToCart extends ProductEvent {
 
   const EventAddToCart(this.id);
 }
-
-class EventAddReview extends ProductEvent {
-  final String id;
-  final String reviewText;
-  final int rating;
-
-  const EventAddReview(this.id, this.reviewText, this.rating);
-}

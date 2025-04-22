@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
 import 'package:shoppi_frontend/cores/store/store.dart';
 import 'package:shoppi_frontend/features/auth/bloc/auth_bloc.dart';
 import 'package:shoppi_frontend/features/auth/bloc/auth_event.dart';
 import 'package:shoppi_frontend/features/auth/bloc/auth_state.dart';
+import 'package:shoppi_frontend/features/auth/pages/register_screen.dart';
 
 class WidgetLoginIcon extends StatefulWidget {
   const WidgetLoginIcon({super.key});
@@ -182,7 +184,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text("Forgot Password?"),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    );
+                  },
                   child: const Text("Register"),
                 ),
               ],

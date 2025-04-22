@@ -5,6 +5,7 @@ import 'package:shoppi_frontend/cores/gen/assets.gen.dart';
 import 'package:shoppi_frontend/cores/widgets/widget_animation_click.dart';
 import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
 import 'package:shoppi_frontend/features/cart/pages/cart_screen.dart';
+import 'package:shoppi_frontend/features/order/pages/order_screen.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_bloc.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_event.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_state.dart';
@@ -71,6 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.receipt_long),
+                tooltip: "My Orders",
+                onPressed: () => context.goPage(const OrderScreen()),
+              ),
               IconButton(
                 icon: const Icon(Icons.shopping_cart_outlined),
                 onPressed: () => context.goPage(const CartScreen()),

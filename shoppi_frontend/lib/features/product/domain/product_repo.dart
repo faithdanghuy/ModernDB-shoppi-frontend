@@ -50,27 +50,4 @@ class ProductRepository {
       rethrow;
     }
   }
-
-  Future<Response> addReview(
-    String id, {
-    required String reviewText,
-    required int rating,
-  }) async {
-    try {
-      DioNetwork.instant.init(isAuth: true);
-      final response = await DioNetwork.instant.dio.post(
-        "${AppConstants.serviceProduct}/$id/review",
-        data: {
-          "productId": id,
-          "userId": CacheData.instant.userId,
-          "comment": reviewText,
-          "rating": rating,
-        },
-      );
-      return response;
-    } catch (e) {
-      if (e is DioException) return e.response!;
-      rethrow;
-    }
-  }
 }

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shoppi_frontend/cores/constants/app_constants.dart';
 import 'package:shoppi_frontend/cores/network/dio_network.dart';
-import 'package:shoppi_frontend/cores/store/store.dart';
 
 class CartRepository {
   CartRepository._();
@@ -29,7 +28,6 @@ class CartRepository {
       final response = await DioNetwork.instant.dio.post(
         AppConstants.serviceCart,
         data: {
-          "userId": CacheData.instant.userId,
           "productId": productId,
           "quantity": quantity,
         },

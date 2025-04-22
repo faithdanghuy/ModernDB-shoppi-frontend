@@ -46,7 +46,15 @@ class DioNetwork {
 
     dio.interceptors.addAll([
       RequestNetwork(),
-      PrettyDioLogger(),
+      PrettyDioLogger(
+        requestHeader: false,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+      ),
     ]);
   }
 }

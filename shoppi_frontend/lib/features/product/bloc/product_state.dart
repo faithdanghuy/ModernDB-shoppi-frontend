@@ -34,9 +34,3 @@ class StateAddToCart extends ProductState {
   final String? message;
   const StateAddToCart({required this.success, this.message});
 }
-
-class StateAddReview extends ProductState {
-  final bool success;
-  final String? message;
-  const StateAddReview({required this.success, this.message});
-}
