@@ -84,6 +84,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
               if (state is StateAddReview) {
                 if (state.success == true) {
+                  setState(() {
+                    commentController.clear();
+                    rating = 0;
+                  });
                   productBloc.add(EventProductDetail(widget.productId));
                 }
               }
