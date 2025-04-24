@@ -36,17 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> categories = [
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/2f/52/8e/00ab5fbea9d35fcc3cadbc28d7c6b14e.png', 
+          'https://salt.tikicdn.com/ts/upload/2f/52/8e/00ab5fbea9d35fcc3cadbc28d7c6b14e.png',
       'title': 'TOP DEAL',
     },
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/72/8d/23/a810d76829d245ddd87459150cb6bc77.png', 
+          'https://salt.tikicdn.com/ts/upload/72/8d/23/a810d76829d245ddd87459150cb6bc77.png',
       'title': 'Shoppi Trading',
     },
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/8b/a4/9f/84d844f70e365515b6e4e3e745dac1d5.png', 
+          'https://salt.tikicdn.com/ts/upload/8b/a4/9f/84d844f70e365515b6e4e3e745dac1d5.png',
       'title': 'Coupon siêu hot',
     },
     {
@@ -56,12 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/61/0d/97/fb78a6e527eeea974705bcb7ba009a36.png', 
+          'https://salt.tikicdn.com/ts/upload/61/0d/97/fb78a6e527eeea974705bcb7ba009a36.png',
       'title': 'Deal hời mỗi ngày',
     },
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/2c/22/e0/d9d268206e9224b0f8ec5efb4095fdad.png', 
+          'https://salt.tikicdn.com/ts/upload/2c/22/e0/d9d268206e9224b0f8ec5efb4095fdad.png',
       'title': 'Du lịch sành điệu',
     },
     {
@@ -71,11 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {
       'iconUrl':
-          'https://salt.tikicdn.com/ts/upload/b2/05/8a/cbdd6befd51ca4945290f6df9522ac52.png', 
+          'https://salt.tikicdn.com/ts/upload/b2/05/8a/cbdd6befd51ca4945290f6df9522ac52.png',
       'title': 'Đón đầu xu hướng',
     },
     {
-      'iconUrl': 'https://salt.tikicdn.com/ts/upload/b5/71/55/e2ccf948e0d8b14a646d2b8fe07cac37.png', 
+      'iconUrl':
+          'https://salt.tikicdn.com/ts/upload/b5/71/55/e2ccf948e0d8b14a646d2b8fe07cac37.png',
       'title': 'Mua là có quà',
     },
   ];
@@ -100,14 +101,13 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
-          appBar: 
-             AppBar(
+          appBar: AppBar(
             backgroundColor: const Color(0xFFFF5722),
             elevation: 0,
             title: Row(
               children: [
                 const Icon(Icons.shopping_bag, size: 40, color: Colors.white),
-                const SizedBox(width: 8), 
+                const SizedBox(width: 8),
                 const Text(
                   'Shoppi',
                   style: TextStyle(
@@ -122,22 +122,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(20), 
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: "Search for products, brands, and more...",
                         hintStyle: TextStyle(color: Colors.grey.shade600),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         suffixIcon: Container(
-                          margin: const EdgeInsets.all(
-                              4), 
+                          margin: const EdgeInsets.all(4),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFF5722),
-                            borderRadius:
-                                BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                           child: const Icon(Icons.search, color: Colors.white),
                         ),
@@ -175,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          flex: 3, 
+                          flex: 3,
                           child: Column(
                             children: [
                               CarouselSlider(
@@ -238,18 +237,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                            width:
-                                8), 
+                        const SizedBox(width: 8),
                         Expanded(
-                          flex: 1, 
+                          flex: 1,
                           child: Column(
                             children: [
                               Container(
-                                height:
-                                    90, 
+                                height: 90,
                                 decoration: BoxDecoration(
-                                  image:  DecorationImage(
+                                  image: DecorationImage(
                                     image: AssetImage(
                                       Assets.lib.features.home.assets.banner1
                                           .path,
@@ -258,14 +254,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                  height:
-                                      8),
+                              const SizedBox(height: 8),
                               Container(
-                                height:
-                                    90,
+                                height: 90,
                                 decoration: BoxDecoration(
-                                  image:  DecorationImage(
+                                  image: DecorationImage(
                                     image: AssetImage(
                                       Assets.lib.features.home.assets.banner2
                                           .path,
@@ -281,10 +274,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Container(
-                    width:  double.infinity,
+                    width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -298,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Center(
                       child: Wrap(
-                        spacing: 16, 
+                        spacing: 16,
                         runSpacing: 16,
                         children: List.generate(categories.length, (index) {
                           final category = categories[index];
@@ -368,7 +361,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     AspectRatio(
                                       aspectRatio: 1,
                                       child: ClipRRect(
-                                        
                                         child: Image.network(
                                           product.image ?? "",
                                           fit: BoxFit.cover,
@@ -431,15 +423,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         ),
-                        Container(
+                  Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       border: Border(
                         top: BorderSide(
-                          color: Color(
-                              0xFFFF5722),
+                          color: Color(0xFFFF5722),
                           width: 2,
                         ),
                       ),
@@ -481,7 +472,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        
                       ],
                     ),
                   ),
