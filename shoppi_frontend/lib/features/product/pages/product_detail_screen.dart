@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
+import 'package:shoppi_frontend/cores/widgets/widget_animation_click.dart';
 import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
 import 'package:shoppi_frontend/features/cart/pages/cart_screen.dart';
 import 'package:shoppi_frontend/features/order/pages/order_screen.dart';
@@ -94,20 +95,50 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: const Color(0xFFFF5722),
-            title: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: "Search on Shopee",
-                  prefixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 8),
+            title: Row(
+              children: [
+                const Icon(Icons.shopping_bag, size: 40, color: Colors.white),
+                const SizedBox(width: 8),
+                WidgetAnimationClick(
+                  onTap: () => context.pop(),
+                  child: const Text(
+                    'Shoppi',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search for products, brands, and more...",
+                        hintStyle: TextStyle(color: Colors.grey.shade600),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        suffixIcon: Container(
+                          margin: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF5722),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          child: const Icon(Icons.search, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             actions: [
               IconButton(

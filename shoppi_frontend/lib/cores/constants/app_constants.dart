@@ -4,6 +4,7 @@ class AppConstants {
   static const String serviceUser = 'user';
   static const String serviceOrder = 'order';
   static const String serviceAuth = 'auth';
+  static const String serviceProfile = 'user';
   static const String serviceCart = 'cart';
   static const String serviceGraph = 'graph';
 }

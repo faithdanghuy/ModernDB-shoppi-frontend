@@ -6,6 +6,7 @@ import 'package:shoppi_frontend/features/auth/bloc/auth_bloc.dart';
 import 'package:shoppi_frontend/features/auth/bloc/auth_event.dart';
 import 'package:shoppi_frontend/features/auth/bloc/auth_state.dart';
 import 'package:shoppi_frontend/features/auth/pages/register_screen.dart';
+import 'package:shoppi_frontend/features/profile/pages/profile_screen.dart';
 
 class WidgetLoginIcon extends StatefulWidget {
   const WidgetLoginIcon({super.key});
@@ -26,7 +27,7 @@ class _WidgetLoginIconState extends State<WidgetLoginIcon> {
             if (!isLoggedIn) {
               showLoginDialog(context);
             } else {
-              showLoginDialog(context);
+              context.goPage(const ProfileScreen());
             }
           },
           icon: Icon(
