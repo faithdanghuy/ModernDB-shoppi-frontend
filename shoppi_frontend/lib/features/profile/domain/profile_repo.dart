@@ -9,8 +9,8 @@ class ProfileRepository {
   Future getProfile() async {
     try {
       DioNetwork.instant.init(isAuth: true);
-      final response = await DioNetwork.instant.dio
-          .get(AppConstants.serviceUser);
+      final response =
+          await DioNetwork.instant.dio.get(AppConstants.serviceUser);
       return response;
     } catch (e) {
       if (e is DioException) {
@@ -27,7 +27,7 @@ class ProfileRepository {
       required String phone}) async {
     try {
       DioNetwork.instant.init(isAuth: true);
-      final response = await DioNetwork.instant.dio.patch(
+      final response = await DioNetwork.instant.dio.put(
         AppConstants.serviceUser,
         data: {
           "full_name": fullname,

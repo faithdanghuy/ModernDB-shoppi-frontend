@@ -172,7 +172,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -222,8 +221,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                 ),
-
-                // ⭐ Reviews
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -253,7 +250,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              // Review text input
                               TextField(
                                 controller: commentController,
                                 maxLines: 3,
@@ -264,7 +260,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              // Rating stars with improved design
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: List.generate(5, (index) {
@@ -277,15 +272,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        rating = index +
-                                            1.0; // Update rating on click
+                                        rating = index + 1.0;
                                       });
                                     },
                                   );
                                 }),
                               ),
                               const SizedBox(height: 16),
-                              // Submit Review Button
                               ElevatedButton(
                                 onPressed: () {
                                   final review = InputReviewModel(
@@ -339,7 +332,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 80),
               ],
             ),
@@ -384,7 +376,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 const SizedBox(width: 8),
                 // Reviewer's name
                 Text(
-                  review.userId ?? "Anonymous",
+                  review.fullName ?? "Anonymous",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],

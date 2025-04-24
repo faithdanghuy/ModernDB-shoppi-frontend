@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
 import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
 import 'package:shoppi_frontend/cores/store/store.dart';
 import 'package:shoppi_frontend/features/auth/model/user_model.dart';
@@ -62,21 +63,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             setState(() {
               userProfile = state.userModel;
               isLoading = false;
-              
+
               isEditing = false;
             });
           } else {
             setState(() {
               errorMessage = state.message ?? "Failed to load profile";
               isLoading = false;
-              
+
               isEditing = false;
+              CacheData.instant.removeAllCache();
+              context.pop();
+              showLoginDialog(context);
             });
           }
         } else if (state is StateUpdateProfile) {
           if (state.success) {
             setState(() {
-              
               profileBloc.add(const EventGetProfile());
             });
             ScaffoldMessenger.of(context).showSnackBar(

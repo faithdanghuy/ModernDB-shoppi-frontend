@@ -24,16 +24,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         address: event.address,
         phone: event.phone,
       );
-      if (response.statusCode == 201) {
-        emit(StateUpdateProfile(success: true, message: response.data['message']));
+      if (response.statusCode == 200) {
+        emit(StateUpdateProfile(
+            success: true, message: response.data['message']));
       } else {
         // emit(StateUpdateProfile(success: false, message: response.data['message']));
         final error = response.data['errors'];
         if (error != null && error is List) {
           emit(StateUpdateProfile(success: false, message: error.first));
         } else {
-          emit(
-              StateUpdateProfile(success: false, message: response.data['message']));
+          emit(StateUpdateProfile(
+              success: false, message: response.data['message']));
         }
       }
     } catch (e) {
@@ -45,8 +46,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   FutureOr<void> _onEventGetProfile(
       EventGetProfile event, Emitter<ProfileState> emit) async {
     try {
-      Response response = await ProfileRepository.instant
-          .getProfile();
+      Response response = await ProfileRepository.instant.getProfile();
       if (response.statusCode == 200) {
         UserModel userModel = UserModel.fromJson(response.data['data']);
         await CacheData.instant.setUserId(userModel.id ?? '');
@@ -63,11 +63,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (error != null && error is List) {
           emit(StateGetProfile(success: false, message: error.first));
         } else {
-          emit(StateGetProfile(success: false, message: response.data['message']));
+          emit(StateGetProfile(
+              success: false, message: response.data['message']));
         }
       }
     } catch (e) {
-      emit(StateGetProfile(success: false, message: e.toString(), userModel: null));
+      emit(StateGetProfile(
+          success: false, message: e.toString(), userModel: null));
       rethrow;
     }
   }
