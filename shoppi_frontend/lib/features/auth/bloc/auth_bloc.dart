@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<EventRegister>(_onEventRegister);
     on<EventLogin>(_onEventLogin);
+    on<EventLogout>(_onEventLogout);
   }
 
   FutureOr<void> _onEventRegister(
@@ -54,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await CacheData.instant.setUserId(userModel.id ?? '');
         await CacheData.instant.setUsername(userModel.username ?? '');
         await CacheData.instant.setToken(userModel.accessToken ?? '');
+        await CacheData.instant.setUserType(userModel.userType ?? '');
 
         emit(StateLogin(
             success: true,
@@ -73,5 +75,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(StateLogin(success: false, message: e.toString(), userModel: null));
       rethrow;
     }
+  }
+
+  FutureOr<void> _onEventLogout(
+      EventLogout event, Emitter<AuthState> emit) async {
+    await CacheData.instant.removeAllCache();
+    emit(AuthInitial());
   }
 }

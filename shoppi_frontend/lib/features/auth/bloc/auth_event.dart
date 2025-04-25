@@ -29,3 +29,4 @@ final class EventLogin extends AuthEvent {
   });
 }
 
+final class EventLogout extends AuthEvent {}

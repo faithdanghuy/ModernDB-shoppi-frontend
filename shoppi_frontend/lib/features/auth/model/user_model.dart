@@ -6,6 +6,7 @@ class UserModel {
   String? address;
   String? email;
   String? username;
+  String? userType;
   String? phone;
   String? accessToken;
   String? refreshToken;
@@ -17,6 +18,7 @@ class UserModel {
     this.email,
     this.address,
     this.username,
+    this.userType,
     this.phone,
     this.accessToken,
     this.refreshToken,
@@ -32,6 +34,7 @@ class UserModel {
     email = json['email'];
     address = json['address'];
     username = json['username'];
+    userType = json['user_type'];
     phone = json['phone_number'];
     accessToken = json['access_token'];
     refreshToken = json['refresh_token'];

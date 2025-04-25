@@ -14,6 +14,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<EventProductList>(_onEventProductList);
     on<EventProductDetail>(_onEventProductDetail);
     on<EventAddToCart>(_onEventAddToCart);
+    on<EventMyProduct>(_onEventMyProduct);
+    on<EventDeleteProduct>(_onEventDeleteProduct);
+    on<EventUpdateProduct>(_onEventUpdateProduct);
+    on<EventAddProduct>(_onEventAddProduct);
   }
 
   FutureOr<void> _onEventProductList(
@@ -72,6 +76,79 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
     } catch (e) {
       emit(StateAddToCart(success: false, message: e.toString()));
+      rethrow;
+    }
+  }
+
+  FutureOr<void> _onEventMyProduct(
+      EventMyProduct event, Emitter<ProductState> emit) async {
+    try {
+      Response response = await ProductRepository.instant.myProduct();
+      if (response.statusCode == 200) {
+        List<ProductModel> listProduct = List<ProductModel>.from(
+            response.data['products'].map((x) => ProductModel.fromJson(x)));
+        emit(StateMyProduct(
+            success: true,
+            message: response.data['message'],
+            data: listProduct));
+      } else {
+        emit(StateMyProduct(success: false, message: response.data['message']));
+      }
+    } catch (e) {
+      emit(StateMyProduct(success: false, message: e.toString()));
+      rethrow;
+    }
+  }
+
+  FutureOr<void> _onEventDeleteProduct(
+      EventDeleteProduct event, Emitter<ProductState> emit) async {
+    try {
+      Response response =
+          await ProductRepository.instant.deleteProduct(event.id);
+      if (response.statusCode == 200) {
+        emit(StateDeleteProduct(
+            success: true, message: response.data['message']));
+      } else {
+        emit(StateDeleteProduct(
+            success: false, message: response.data['message']));
+      }
+    } catch (e) {
+      emit(StateDeleteProduct(success: false, message: e.toString()));
+      rethrow;
+    }
+  }
+
+  FutureOr<void> _onEventUpdateProduct(
+      EventUpdateProduct event, Emitter<ProductState> emit) async {
+    try {
+      Response response = await ProductRepository.instant
+          .updateProduct(event.inputProductModel);
+      if (response.statusCode == 200) {
+        emit(StateUpdateProduct(
+            success: true, message: response.data['message']));
+      } else {
+        emit(StateUpdateProduct(
+            success: false, message: response.data['message']));
+      }
+    } catch (e) {
+      emit(StateUpdateProduct(success: false, message: e.toString()));
+      rethrow;
+    }
+  }
+
+  FutureOr<void> _onEventAddProduct(
+      EventAddProduct event, Emitter<ProductState> emit) async {
+    try {
+      Response response =
+          await ProductRepository.instant.addProduct(event.inputProductModel);
+      if (response.statusCode == 201) {
+        emit(StateAddProduct(success: true, message: response.data['message']));
+      } else {
+        emit(
+            StateAddProduct(success: false, message: response.data['message']));
+      }
+    } catch (e) {
+      emit(StateAddProduct(success: false, message: e.toString()));
       rethrow;
     }
   }

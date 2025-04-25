@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppi_frontend/features/auth/bloc/auth_bloc.dart';
+import 'package:shoppi_frontend/features/auth/bloc/auth_event.dart';
 import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
 import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
-import 'package:shoppi_frontend/cores/store/store.dart';
 import 'package:shoppi_frontend/features/auth/model/user_model.dart';
+import 'package:shoppi_frontend/features/home/pages/appbar_widget.dart';
 import 'package:shoppi_frontend/features/home/pages/home_screen.dart';
 import 'package:shoppi_frontend/features/profile/bloc/profile_state.dart';
 import 'package:shoppi_frontend/features/profile/bloc/profile_bloc.dart';
@@ -18,6 +20,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileBloc profileBloc = ProfileBloc();
+  final AuthBloc authBloc = AuthBloc();
   UserModel? userProfile;
   bool isLoading = true;
   String? errorMessage;
@@ -72,7 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               isLoading = false;
 
               isEditing = false;
-              CacheData.instant.removeAllCache();
+              authBloc.add(EventLogout());
+
               context.pop();
               showLoginDialog(context);
             });
@@ -99,10 +103,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Profile"),
-          backgroundColor: const Color(0xFFFF5722),
-        ),
+        backgroundColor: const Color(0xFFF5F5F5),
+        appBar: const ShoppiAppBar(),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : errorMessage != null
@@ -233,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const Spacer(),
                         ElevatedButton(
                           onPressed: () {
-                            CacheData.instant.removeAllCache();
+                            authBloc.add(EventLogout());
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Logout successful!"),

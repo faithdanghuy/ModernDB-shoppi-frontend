@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppi_frontend/cores/extensions/extension_context.dart';
 import 'package:shoppi_frontend/cores/gen/assets.gen.dart';
 import 'package:shoppi_frontend/cores/widgets/widget_animation_click.dart';
-import 'package:shoppi_frontend/features/auth/pages/login_screen.dart';
-import 'package:shoppi_frontend/features/cart/pages/cart_screen.dart';
-import 'package:shoppi_frontend/features/order/pages/order_screen.dart';
+import 'package:shoppi_frontend/features/home/pages/appbar_widget.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_bloc.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_event.dart';
 import 'package:shoppi_frontend/features/product/bloc/product_state.dart';
@@ -101,64 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFFFF5722),
-            elevation: 0,
-            title: Row(
-              children: [
-                const Icon(Icons.shopping_bag, size: 40, color: Colors.white),
-                const SizedBox(width: 8),
-                const Text(
-                  'Shoppi',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Search for products, brands, and more...",
-                        hintStyle: TextStyle(color: Colors.grey.shade600),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        suffixIcon: Container(
-                          margin: const EdgeInsets.all(4),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF5722),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: const Icon(Icons.search, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.receipt_long),
-                tooltip: "My Orders",
-                onPressed: () => context.goPage(const OrderScreen()),
-              ),
-              IconButton(
-                icon: const Icon(Icons.shopping_cart_outlined),
-                onPressed: () => context.goPage(const CartScreen()),
-              ),
-              const WidgetLoginIcon(),
-            ],
-          ),
+          appBar: const ShoppiAppBar(),
           body: RefreshIndicator(
             onRefresh: () async {
               productBloc.add(const EventProductList());
@@ -320,7 +261,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   listProduct.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(
+                          child: SizedBox(
+                              height: 200,
+                              child:
+                                  Center(child: CircularProgressIndicator())))
                       : GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),

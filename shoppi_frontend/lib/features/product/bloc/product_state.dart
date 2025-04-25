@@ -34,3 +34,29 @@ class StateAddToCart extends ProductState {
   final String? message;
   const StateAddToCart({required this.success, this.message});
 }
+
+class StateMyProduct extends ProductState {
+  final bool success;
+  final String? message;
+  final List<ProductModel>? data;
+
+  const StateMyProduct({required this.success, this.message, this.data});
+}
+
+class StateDeleteProduct extends ProductState {
+  final bool success;
+  final String? message;
+  const StateDeleteProduct({required this.success, this.message});
+}
+
+class StateUpdateProduct extends ProductState {
+  final bool success;
+  final String? message;
+  const StateUpdateProduct({required this.success, this.message});
+}
+
+class StateAddProduct extends ProductState {
+  final bool success;
+  final String? message;
+  const StateAddProduct({required this.success, this.message});
+}

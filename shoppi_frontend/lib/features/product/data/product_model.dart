@@ -4,7 +4,7 @@ class ProductModel {
   String? name;
   String? description;
   double? price;
-  int? storeId;
+  String? storeId;
   int? stock;
   String? image;
 

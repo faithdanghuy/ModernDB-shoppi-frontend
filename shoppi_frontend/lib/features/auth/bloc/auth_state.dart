@@ -24,3 +24,7 @@ class StateLogin extends AuthState {
     this.userModel,
   });
 }
+
+class StateLogout extends AuthState {
+  const StateLogout();
+}
